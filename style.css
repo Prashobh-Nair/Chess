@@ -1,0 +1,487 @@
+/* Modern Reset */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /* Premium Palette (Slate & Blue) */
+    --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --text-color: #1e293b;
+    --text-muted: #64748b;
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+
+    /* Elegant Board Colors */
+    --sq-light: #e2e8f0;
+    /* Soft Blue-White */
+    --sq-dark: #64748b;
+    /* Cool Slate Blue */
+    --sq-highlight: rgba(59, 130, 246, 0.5);
+    /* Professional Blue Highlight */
+    --sq-last-move: rgba(251, 191, 36, 0.4);
+    /* Gentle Amber/Gold for last move */
+
+    /* Glassmorphism */
+    --panel-bg: rgba(255, 255, 255, 0.65);
+    --panel-border: 1px solid rgba(255, 255, 255, 0.5);
+    --backdrop-blur: 12px;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --board-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.2), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+    --border-radius: 16px;
+    --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body.dark-mode {
+    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    --text-color: #f1f5f9;
+    --text-muted: #94a3b8;
+
+    --sq-light: #334155;
+    /* Dark Slate */
+    --sq-dark: #1e293b;
+    /* Darker Slate */
+    --sq-highlight: rgba(59, 130, 246, 0.4);
+
+    --panel-bg: rgba(30, 41, 59, 0.7);
+    --panel-border: 1px solid rgba(255, 255, 255, 0.1);
+
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --board-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+}
+
+body {
+    font-family: var(--font-main);
+    background: var(--bg-gradient);
+    background-attachment: fixed;
+    /* Parallax-ish */
+    color: var(--text-color);
+    transition: color 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Center Vertically too */
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 550px;
+    /* Slightly constrained for elegance */
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: var(--panel-bg);
+    backdrop-filter: blur(var(--backdrop-blur));
+    -webkit-backdrop-filter: blur(var(--backdrop-blur));
+    border: var(--panel-border);
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
+}
+
+/* Header */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    /* Subtle separator */
+    padding-bottom: 15px;
+    margin-bottom: 5px;
+}
+
+.logo {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--text-color) 0%, var(--text-muted) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.icon-btn {
+    background: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 12px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.dark-mode .icon-btn {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.icon-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+    transform: translateY(-1px);
+}
+
+body.dark-mode .icon-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.sun-icon {
+    display: block;
+}
+
+.moon-icon {
+    display: none;
+}
+
+body.dark-mode .sun-icon {
+    display: none;
+}
+
+body.dark-mode .moon-icon {
+    display: block;
+}
+
+/* Game Area */
+.game-area {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    width: 100%;
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 16px;
+    /* Soft neumorphic/glass feel */
+}
+
+body.dark-mode .player-info {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.avatar {
+    font-size: 1.4rem;
+    background: var(--bg-color);
+    /* Fallback */
+    background: linear-gradient(135deg, #e0e7ff 0%, #e2e8f0 100%);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    box-shadow: var(--shadow-sm);
+}
+
+body.dark-mode .avatar {
+    background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+}
+
+.name {
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.captures {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Board */
+.board-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 12px;
+    box-shadow: var(--board-shadow);
+    padding: 8px;
+    /* Frame */
+    background: rgba(255, 255, 255, 0.8);
+    /* Frame color Light */
+}
+
+body.dark-mode .board-container {
+    background: rgba(30, 41, 59, 0.8);
+}
+
+.chessboard {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.square {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.square.light {
+    background-color: var(--sq-light);
+}
+
+.square.dark {
+    background-color: var(--sq-dark);
+}
+
+.square.selected {
+    position: relative;
+}
+
+.square.selected::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--sq-highlight);
+    z-index: 1;
+    /* Below piece */
+}
+
+.square.last-move {
+    position: relative;
+}
+
+.square.last-move::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--sq-last-move);
+    z-index: 1;
+}
+
+/* Pieces */
+.piece {
+    width: 100%;
+    height: 100%;
+    background-size: 85%;
+    /* Slightly smaller for cleaner look */
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: grab;
+    z-index: 10;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* Bouncy pop */
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+    /* Enhanced 3D shadow */
+}
+
+.piece:hover {
+    transform: translateY(-3px);
+    /* Hover lift */
+}
+
+.piece:active {
+    cursor: grabbing;
+    transform: scale(1.1) translateY(-5px);
+}
+
+/* Dots / Rings */
+.valid-move::after {
+    content: '';
+    position: absolute;
+    width: 14%;
+    /* Refined dot */
+    height: 14%;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    z-index: 5;
+}
+
+.valid-capture::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0 0 0 4px rgba(0, 0, 0, 0.2);
+    /* Inset ring for elegance */
+    border-radius: 0;
+    /* Square highlight or round? Let's use inset ring on square */
+    /* Or keeping the corner triangles? No, ring is cleaner. */
+}
+
+/* Let's try corner markers for capture instead? No, circle validation is standard. */
+.valid-capture::after {
+    width: 85%;
+    height: 85%;
+    border: 4px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    background: transparent;
+}
+
+
+/* Controls */
+.controls-panel {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.status-box {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+}
+
+body.dark-mode .status-box {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.btn {
+    flex: 1;
+    /* Stretch buttons */
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn.primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
+}
+
+.btn.primary:hover {
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn.secondary {
+    background: transparent;
+    color: var(--text-color);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .btn.secondary {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn.secondary:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode .btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+
+/* Modal */
+.modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    border-radius: 24px;
+    /* Match container */
+}
+
+.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: var(--panel-bg);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+    border: var(--panel-border);
+}
+
+.promotion-options {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.promo-btn {
+    font-size: 2.5rem;
+    background: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 10px;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: all 0.2s;
+}
+
+.promo-btn:hover {
+    transform: translateY(-2px);
+    background: rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-md);
+}
+
+@media (max-width: 480px) {
+    .app-container {
+        padding: 16px;
+        border-radius: 0;
+        min-height: 100vh;
+        max-width: 100%;
+        box-shadow: none;
+    }
+
+    body {
+        padding: 0;
+    }
+
+    .logo {
+        font-size: 1.4rem;
+    }
+}
